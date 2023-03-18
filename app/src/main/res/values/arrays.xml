@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="commentAry">
+        <item>부모의 학대는\n 자기 잘못이 아니에요. 죄책감에  빠지지 마세요!</item>
+        <item>부모를 낳았다고 때리는 것은 권리가 아니에요! 위축할 필요 없어요!</item>
+        <item>쉼터에서는 다른 따뜻한 부모님들이 계세요! </item>
+        <item>쉼터에는 다른 아픔들을 가지고 있는 친구들이 있어요! 각자의 콤플랙스를 이해해 줄거에요!</item>
+        <item>갈 곳이 없다면 이 곳에서 상담을 받아보세요! 앞으로 살아갈 날이 많아요 이제 부터 시작해 보자구요!</item>
+    </string-array>
+
+
+
+</resources>
