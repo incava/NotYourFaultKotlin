@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Item(
     @SerializedName("cpctCnt")
-    val cpctCnt: Int?,
+    val cpctCnt: String?,
     @SerializedName("crtrYmd")
     val crtrYmd: String?,
     @SerializedName("ctpvNm")
@@ -17,7 +17,7 @@ data class Item(
     @SerializedName("etrTrgtCn")
     val etrTrgtCn: String?,
     @SerializedName("expsrYn")
-    val expsrYn: Boolean?,
+    val expsrYn: String?,
     @SerializedName("fcltNm")
     val fcltNm: String?,
     @SerializedName("fcltTypeNm")
@@ -27,9 +27,9 @@ data class Item(
     @SerializedName("hmpgAddr")
     val hmpgAddr: String?,
     @SerializedName("lat")
-    val lat: Int?,
+    val lat: String?,
     @SerializedName("lot")
-    val lot: Int?,
+    val lot: String?,
     @SerializedName("lotnoAddr")
     val lotnoAddr: String?,
     @SerializedName("nrbBusStnNm")

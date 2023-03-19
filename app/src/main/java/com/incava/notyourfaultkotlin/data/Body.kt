@@ -7,11 +7,11 @@ data class Body(
     @SerializedName("items")
     val items: Items?,
     @SerializedName("numOfRows")
-    val numOfRows: Int?,
+    val numOfRows: String?,
     @SerializedName("pageNo")
-    val pageNo: Int?,
+    val pageNo: String?,
     @SerializedName("resultType")
     val resultType: String?,
     @SerializedName("totalCount")
-    val totalCount: Int?
+    val totalCount: String?
 )
