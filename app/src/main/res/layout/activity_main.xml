@@ -25,6 +25,28 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tab_layout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" >
+
+    </androidx.viewpager2.widget.ViewPager2>
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/pb"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        style="?android:attr/progressBarStyleLarge"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/pbCmt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
+        app:layout_constraintTop_toBottomOf="@id/pb"
+        app:layout_constraintLeft_toLeftOf="@id/pb"
+        app:layout_constraintRight_toRightOf="@id/pb"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
