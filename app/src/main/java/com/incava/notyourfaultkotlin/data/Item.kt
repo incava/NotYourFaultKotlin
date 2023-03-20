@@ -1,9 +1,14 @@
 package com.incava.notyourfaultkotlin.data
 
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 data class Item(
+    @PrimaryKey(autoGenerate = true)
+    val id : Int,
     @SerializedName("cpctCnt")
     val cpctCnt: String?,
     @SerializedName("crtrYmd")

@@ -1,30 +1,13 @@
 package com.incava.notyourfaultkotlin
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.TableLayout
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayout.Tab
-import com.google.android.material.tabs.TabLayoutMediator
-import com.incava.notyourfaultkotlin.data.Item
-import com.incava.notyourfaultkotlin.data.ShelterDTO
+import com.incava.notyourfaultkotlin.database.ShelterDAO
 import com.incava.notyourfaultkotlin.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * 뷰페이저로 map과 Query를 보여주기 위한 액티비티.
@@ -32,6 +15,7 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)

@@ -8,14 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import com.incava.notyourfaultkotlin.data.Item
 import com.incava.notyourfaultkotlin.databinding.FragmentMapBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
@@ -35,7 +32,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMapBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -50,8 +47,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(naverMap: NaverMap) {
-        settingMark(naverMap)
-        shelterViewModel.loadData()
+       settingMark(naverMap)
     }
 
     private fun settingMark(naverMap: NaverMap) {
