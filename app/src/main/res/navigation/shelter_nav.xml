@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shelter_nav"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.incava.notyourfaultkotlin.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/queryFragment"
+        android:name="com.incava.notyourfaultkotlin.QueryFragment"
+        android:label="fragment_query"
+        tools:layout="@layout/fragment_query" />
+    <fragment
+        android:id="@+id/wantFragment"
+        android:name="com.incava.notyourfaultkotlin.WantFragment"
+        android:label="fragment_want"
+        tools:layout="@layout/fragment_want" />
+</navigation>
