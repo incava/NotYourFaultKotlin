@@ -4,14 +4,15 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.incava.notyourfaultkotlin.data.Item
 import com.incava.notyourfaultkotlin.data.ShelterDTO
+import com.incava.notyourfaultkotlin.database.ShelterDAO
 import com.incava.notyourfaultkotlin.database.ShelterDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,7 +65,7 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
                     totalNum =
                         response.body()?.response!!.body?.totalCount?.toInt()!! // 총 갯수도 파악하기 위해. 변수 세팅.
                     var list: List<Item> =
-                        (response.body()!!.response?.body?.items?.item as List<Item>?)!! // 아이템을 받아옴.
+                        response.body()!!.response?.body?.items?.item!! // 아이템을 받아옴.
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
                             Log.i("db숫자", getUserCount().toString())
