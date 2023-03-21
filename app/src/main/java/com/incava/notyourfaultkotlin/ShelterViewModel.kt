@@ -18,9 +18,6 @@ import retrofit2.Response
 
 class ShelterViewModel(application: Application) : AndroidViewModel(application) {
     private val shelterDao = ShelterDatabase.getInstance(application)!!.shelterDao()
-    val isLoadData: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
     var totalNum = Int.MAX_VALUE // 데이터의 갯수를 알 수 있는 변수, 초기에는 무조건 받아야하므로 최대 수로 셋팅.
     var shelterList = MutableLiveData<List<Item>>()
 
@@ -56,7 +53,6 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
 
 
     private fun loadData() {
-        isLoadData.postValue(false)
         val service = RetrofitClient.getInstance().create(APIService::class.java).queryShelter(
             "hSF2++mMiQXwGI5XfZmbSDPqorgTy+jVDuSMNwWmA1gY2h2HASedPbnFIz/eEBlxG8O2nv2vIsz7WSGLeIjWzw==",
             1, 1000, "json"
@@ -65,12 +61,13 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
             override fun onResponse(call: Call<ShelterDTO>, response: Response<ShelterDTO>) {
                 var result = response.body()?.response?.header?.resultCode // 응답 확인.
                 if (result == "0") { // 받아온 아이템 배열
-                    totalNum = response.body()?.response!!.body?.totalCount?.toInt()!! // 총 갯수도 파악하기 위해. 변수 세팅.
+                    totalNum =
+                        response.body()?.response!!.body?.totalCount?.toInt()!! // 총 갯수도 파악하기 위해. 변수 세팅.
                     var list: List<Item> =
                         (response.body()!!.response?.body?.items?.item as List<Item>?)!! // 아이템을 받아옴.
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
-                            Log.i("db숫자",getUserCount().toString())
+                            Log.i("db숫자", getUserCount().toString())
                             if (getUserCount() < totalNum) { //만약 db와 값이 같다면 이미 있는 것. 중복도 제거 했으므로 그러할 것.
                                 addRoom(list)
                             }
