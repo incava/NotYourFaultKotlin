@@ -61,6 +61,14 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    fun loadCtpv(list: List<Item>){ // ctpv가 무엇이 있는지 알아보기위해 메서드 작성.
+        var lists = mutableSetOf<String>()
+        list.forEach{
+            lists.add(it.ctpvNm!!)
+        }
+        Log.i("ctpv",lists.toString())
+    }
+
 
     private fun loadData() {
         val service = RetrofitClient.getInstance().create(APIService::class.java).queryShelter(

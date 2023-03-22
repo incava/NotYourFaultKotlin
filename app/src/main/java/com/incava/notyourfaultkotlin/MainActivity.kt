@@ -2,6 +2,8 @@ package com.incava.notyourfaultkotlin
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -35,5 +37,6 @@ class MainActivity : AppCompatActivity() {
         Log.i("destroy", "destroy")
         finish() // 요즘은 destroy해도 바로 안꺼짐
     }
+
 
 }

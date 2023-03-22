@@ -9,7 +9,8 @@
         android:id="@+id/mapFragment"
         android:name="com.incava.notyourfaultkotlin.MapFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map" >
+    </fragment>
     <fragment
         android:id="@+id/queryFragment"
         android:name="com.incava.notyourfaultkotlin.QueryFragment"
