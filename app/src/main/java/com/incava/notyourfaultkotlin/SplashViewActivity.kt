@@ -19,7 +19,7 @@ class SplashViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashViewBinding.inflate(layoutInflater)
-            setContentView(binding.root)
+        setContentView(binding.root)
         setTextCmt()
         moveMain(3)
     }

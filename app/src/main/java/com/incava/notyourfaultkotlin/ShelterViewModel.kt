@@ -17,6 +17,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+/**
+ * Room을 관리하기 위한 ViewModel. application의 권한을 받기 위해 AndroidViewModel을 사용.
+ */
 class ShelterViewModel(application: Application) : AndroidViewModel(application) {
     private val shelterDao = ShelterDatabase.getInstance(application)!!.shelterDao()
     var totalNum = Int.MAX_VALUE // 데이터의 갯수를 알 수 있는 변수, 초기에는 무조건 받아야하므로 최대 수로 셋팅.

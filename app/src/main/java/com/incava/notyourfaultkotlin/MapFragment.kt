@@ -21,6 +21,10 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
 
+/**
+ * 권한을 요구 하고, 요구가 없다면 맵 Fragment
+ */
+
 class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentMapBinding? = null

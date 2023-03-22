@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.incava.notyourfaultkotlin.data.Item
 import com.incava.notyourfaultkotlin.databinding.ShelterItemBinding
 
+/**
+ * 조회한 아이템을 보여주는 리사이클러뷰 어댑터
+ */
 class ShelterAdapter(private val items : ArrayList<Item>) : Adapter<ShelterAdapter.ShelterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelterViewHolder {

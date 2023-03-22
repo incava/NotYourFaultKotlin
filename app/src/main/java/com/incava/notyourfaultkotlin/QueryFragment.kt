@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.incava.notyourfaultkotlin.databinding.FragmentQueryBinding
 
+
 class QueryFragment : Fragment() {
 
     private var _binding : FragmentQueryBinding? = null
