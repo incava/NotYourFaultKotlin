@@ -16,7 +16,7 @@ class ShelterAdapter: Adapter<ShelterAdapter.ShelterViewHolder>() {
     fun setItem(itemList : List<Item>){
         items.clear()
         items.addAll(itemList) // filter라서 모두 삭제후  다시 아이템을 넣고 변경.
-        notifyItemRangeChanged(0,itemList.size)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelterViewHolder {

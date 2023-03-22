@@ -24,11 +24,15 @@ import retrofit2.Response
 class ShelterViewModel(application: Application) : AndroidViewModel(application) {
     private val shelterDao = ShelterDatabase.getInstance(application)!!.shelterDao()
     var totalNum = Int.MAX_VALUE // 데이터의 갯수를 알 수 있는 변수, 초기에는 무조건 받아야하므로 최대 수로 셋팅.
-    val shelterList : MutableLiveData<List<Item>> by lazy{
+    val shelterList: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>()
     }
-    val shelterFilterList : MutableLiveData<List<Item>> by lazy{
+    val shelterFilterList: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>()
+    }
+
+    init {
+        loadData()
     }
 
     fun getAllShelters() { //DB의 모든 수를 가져오는 쿼리.
@@ -47,9 +51,35 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         shelterDao.deleteShelterData(shelter)
     }
 
-    init {
-        loadData()
+    fun getFilterArray(region: String, gender: String) { // filter를 통해 filterList에 전달.
+        var list: List<Item> = shelterList.value ?: return
+        shelterFilterList.postValue(genderFilter(gender,regionFilter(region,list)))
     }
+    //지역을 거를 수 있는 filter 함수인 변수.
+    val regionFilter : (String, List<Item>) -> List<Item> = { region, list -> //람다식으로 변수화 시켰음.
+        if (region == "전체" || region == "") list //만약 빈값 또는 전체가 값으로 오면 받은 그대로를 보냄.
+        else {
+            val filterList = mutableListOf<Item>() //저장할 값.
+            list.forEach {
+                if (it.ctpvNm == region) filterList.add(it) //같은 값으로 보여줌.
+            }
+            filterList
+        }
+    }
+
+    //성별을 filter 할 수 있는 함수인 변수.
+    val genderFilter : (String, List<Item>) -> List<Item> = { gender, list-> //공통은 무조건 들어가도록 하였음.
+        if(gender == "전체" || gender == "") list//만약 빈값 또는 전체가 값으로 오면 받은 그대로를 보냄.
+        else{
+            val filterList = mutableListOf<Item>()
+            list.forEach{
+                if (it.etrTrgtCn == "공통" || it.etrTrgtCn == gender) filterList.add(it)
+            }
+            filterList
+        }
+    }
+
+
 
     fun addRoom(list: List<Item>) { //없으면 그만큼 채우기 위해 넣어준다. 만약 10개가 이미 있어도 중복데이터는 막아서 괜찮다.
         viewModelScope.launch {
@@ -61,12 +91,12 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    fun loadCtpv(list: List<Item>){ // ctpv가 무엇이 있는지 알아보기위해 메서드 작성.
+    fun loadCtpv(list: List<Item>) { // ctpv가 무엇이 있는지 알아보기위해 메서드 작성.
         var lists = mutableSetOf<String>()
-        list.forEach{
+        list.forEach {
             lists.add(it.ctpvNm!!)
         }
-        Log.i("ctpv",lists.toString())
+        Log.i("ctpv", lists.toString())
     }
 
 

@@ -1,6 +1,7 @@
 package com.incava.notyourfaultkotlin
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,10 @@ import com.incava.notyourfaultkotlin.databinding.FragmentQueryBinding
 
 class QueryFragment : Fragment() {
 
-    private var _binding : FragmentQueryBinding? = null
+    private var _binding: FragmentQueryBinding? = null
     private val binding get() = _binding!!
     private val shelterViewModel: ShelterViewModel by activityViewModels()
-    private val shelterAdapter : ShelterAdapter by lazy {
+    private val shelterAdapter: ShelterAdapter by lazy {
         ShelterAdapter()
     }
 
@@ -27,7 +28,7 @@ class QueryFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentQueryBinding.inflate(inflater,container,false)
+        _binding = FragmentQueryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -35,20 +36,41 @@ class QueryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.rcv.apply {
             adapter = shelterAdapter
-            layoutManager = LinearLayoutManager(activity,LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         }
-        val regions = resources.getStringArray(R.array.regionAry)
-        binding.actvRegion.setAdapter(ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line,
-            regions))
+        attachSpinner()
         initObserver()
+        binding.btnQuery.setOnClickListener { //버튼 클릭시,조회할 값을 주고 livedata변경.
+            Log.i("region",binding.actvRegion.text.toString())
+            Log.i("gender",binding.actvGender.text.toString())
+            shelterViewModel.getFilterArray(
+                binding.actvRegion.text.toString(),
+                binding.actvGender.text.toString()
+            )
+        }
     }
 
-    private fun initObserver(){
-        shelterViewModel.shelterFilterList.observe(viewLifecycleOwner){
+
+    private fun initObserver() { //옵져버 붙여주는 메서드
+        shelterViewModel.shelterFilterList.observe(viewLifecycleOwner) {
             shelterAdapter.setItem(it) // 바뀐 부분에 대해 아이템을 넣어 준다.
         }
     }
 
+    private fun attachSpinner() { // spinner에 콤보박스를 붙여주는 메서드.
+        binding.actvRegion.setAdapter(
+            ArrayAdapter(
+                requireContext(), android.R.layout.simple_dropdown_item_1line,
+                resources.getStringArray(R.array.regionAry)
+            )
+        ) //지역 String Array Spinner에 붙여준다.
+        binding.actvGender.setAdapter(
+            ArrayAdapter(
+                requireContext(), android.R.layout.simple_dropdown_item_1line,
+                resources.getStringArray(R.array.genderAry)
+            )
+        ) //지역 String Array Spinner에 붙여준다.
+    }
 
 
 }
