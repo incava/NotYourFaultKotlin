@@ -17,6 +17,7 @@ import com.incava.notyourfaultkotlin.databinding.FragmentMapBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
@@ -95,6 +96,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private var permission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()){
-            binding.mapView.getMapAsync(this)
+            binding.map.getFragment<MapFragment>().getMapAsync(this)
         }
 }
