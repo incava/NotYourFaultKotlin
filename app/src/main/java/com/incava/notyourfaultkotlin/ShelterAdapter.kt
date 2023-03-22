@@ -10,7 +10,14 @@ import com.incava.notyourfaultkotlin.databinding.ShelterItemBinding
 /**
  * 조회한 아이템을 보여주는 리사이클러뷰 어댑터
  */
-class ShelterAdapter(private val items : ArrayList<Item>) : Adapter<ShelterAdapter.ShelterViewHolder>() {
+class ShelterAdapter: Adapter<ShelterAdapter.ShelterViewHolder>() {
+    private var items  = mutableListOf<Item>()
+
+    fun setItem(itemList : List<Item>){
+        items.clear()
+        items.addAll(itemList) // filter라서 모두 삭제후  다시 아이템을 넣고 변경.
+        notifyItemRangeChanged(0,itemList.size)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShelterViewHolder {
         val binding = ShelterItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)

@@ -24,7 +24,12 @@ import retrofit2.Response
 class ShelterViewModel(application: Application) : AndroidViewModel(application) {
     private val shelterDao = ShelterDatabase.getInstance(application)!!.shelterDao()
     var totalNum = Int.MAX_VALUE // 데이터의 갯수를 알 수 있는 변수, 초기에는 무조건 받아야하므로 최대 수로 셋팅.
-    var shelterList = MutableLiveData<List<Item>>()
+    val shelterList : MutableLiveData<List<Item>> by lazy{
+        MutableLiveData<List<Item>>()
+    }
+    val shelterFilterList : MutableLiveData<List<Item>> by lazy{
+        MutableLiveData<List<Item>>()
+    }
 
     fun getAllShelters() { //DB의 모든 수를 가져오는 쿼리.
         shelterList.postValue(shelterDao.getAllShelterData())
@@ -72,14 +77,10 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
                         response.body()!!.response?.body?.items?.item!! // 아이템을 받아옴.
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
-                            Log.i("db숫자", getUserCount().toString())
-                            if (getUserCount() < totalNum) { //만약 db와 값이 같다면 이미 있는 것. 중복도 제거 했으므로 그러할 것.
-                                addRoom(list)
-                            }
-                            getAllShelters()
+                            shelterList.postValue(list) //모든수가 있어야하는 List
+                            shelterFilterList.postValue(list) // 처음에 shelterFilter에 전부 있어야 하기 때문에 넣어줌.
                         }
                     }
-                    Log.i("size", shelterList.value?.size.toString())
                 }
             }
 
