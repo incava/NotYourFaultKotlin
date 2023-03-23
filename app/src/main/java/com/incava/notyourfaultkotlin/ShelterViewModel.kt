@@ -47,7 +47,7 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
-    suspend fun getAllShelterName(){ //DB의 모든 수를 가져오는 쿼리.
+    suspend fun getAllShelterName(){ //DB의 모든 이름만을 가져오는 쿼리.
         roomNameSet =  withContext(Dispatchers.IO){
              shelterDao.getAllShelterNameData().toMutableSet()
         }
@@ -58,6 +58,7 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
             Log.i("insert",shelter.toString())
             shelterDao.insertShelterData(shelter)
             roomNameSet.add(shelter.fcltNm)
+            getAllShelters()
         }
     }
 
@@ -65,6 +66,7 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         CoroutineScope(Dispatchers.IO).launch {
             shelterDao.deleteShelterData(shelter)
             roomNameSet.remove(shelter.fcltNm)
+            getAllShelters()
         }
     }
 
