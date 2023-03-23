@@ -53,12 +53,18 @@ class WantFragment : Fragment() {
     }
 
     private fun initClickListener() {
+        //어댑터의 하트를 클릭시 처리하는 메서드.
         shelterAdapter.listItemClick(object : ShelterAdapter.SetOnClickListenerInterface {
             override fun listItemClickListener(item: Item, select: Boolean) {
                 if (select) shelterViewModel.deleteShelter(item)
                 else shelterViewModel.insertShelter(item)
             }
         })
+
+        binding.fab.setOnClickListener {
+            //스크롤을 올릴 때 smooth하게 올려주는 기능.
+            binding.rcv.smoothScrollToPosition(0)
+        }
     }
 
 

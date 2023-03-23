@@ -99,6 +99,13 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/rcv"
+        app:layout_anchorGravity="end|bottom"
+        android:layout_margin="16dp"
+        android:src="@drawable/vector_fab" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

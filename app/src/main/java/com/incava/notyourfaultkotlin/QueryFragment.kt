@@ -74,6 +74,10 @@ class QueryFragment : Fragment() {
                 binding.actvGender.text.toString()
             )
         }
+        binding.fab.setOnClickListener {
+            //스크롤을 올릴 때 smooth하게 올려주는 기능.
+            binding.rcv.smoothScrollToPosition(0)
+        }
     }
 
 
