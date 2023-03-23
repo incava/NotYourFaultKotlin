@@ -17,10 +17,12 @@ import com.incava.notyourfaultkotlin.databinding.FragmentMapBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
 import com.naver.maps.map.CameraUpdate
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.Marker
+import com.naver.maps.map.util.FusedLocationSource
 
 /**
  * 권한을 요구 하고, 요구가 없다면 맵 Fragment
@@ -31,6 +33,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
     private val shelterViewModel: ShelterViewModel by activityViewModels()
+    private lateinit var locationSource: FusedLocationSource
+    private lateinit var naverMap: NaverMap
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +47,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
         permission.launch(Manifest.permission.ACCESS_FINE_LOCATION)
     }
 
@@ -50,22 +55,33 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         super.onDestroy()
         _binding = null
     }
-
-    override fun onMapReady(naverMap: NaverMap) {
-       settingMark(naverMap)
+    override fun onMapReady(map: NaverMap) {
+        naverMap = map
+        naverMap.locationSource = locationSource
+        settingMark(naverMap)
     }
 
     private fun settingMark(naverMap: NaverMap) {
-        if (ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED){
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
             val cameraUpdate = CameraUpdate.scrollTo(getCurrentPosition()) //카메라 움직임.
                 .animate(CameraAnimation.Fly) //애니메이션 추가.
             naverMap.moveCamera(cameraUpdate)
-        }
-        else{
-            Log.i("noGrant",
-                requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION).toString()+ContextCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION)
+            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+        } else {
+            Log.i(//로그값 출력
+                "noGrant",
+                requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                    .toString() + ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
             )
+            naverMap.locationTrackingMode = LocationTrackingMode.None
         }
         shelterViewModel.shelterList.observe(viewLifecycleOwner) {
             it.forEach { item ->
@@ -80,7 +96,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getCurrentPosition(): LatLng {
-        var latlng = LatLng(0.0, 0.0)
+        var latlng = LatLng(37.0, 127.0)
         val manager =
             requireActivity().getSystemService(AppCompatActivity.LOCATION_SERVICE) as LocationManager
         if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -93,9 +109,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         Log.i("latlng", latlng.toString())
         return latlng
     }
-
+    //권한 선언 후, map을 그려낼 콜백 구현체 생성
     private var permission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()){
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             binding.map.getFragment<MapFragment>().getMapAsync(this)
         }
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    }
+
 }
