@@ -3,11 +3,14 @@
 
     <item
         android:id="@+id/mapFragment"
+        android:icon="@drawable/vector_nav_map"
         android:title="Map"/>
     <item
         android:id="@+id/queryFragment"
+        android:icon="@drawable/vector_nav_list"
         android:title="List"/>
     <item
         android:id="@+id/wantFragment"
+        android:icon="@drawable/vector_nav_favor"
         android:title="Heart"/>
 </menu>
