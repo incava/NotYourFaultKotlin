@@ -13,6 +13,7 @@ import com.incava.notyourfaultkotlin.database.ShelterDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,20 +28,31 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
     val shelterList: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>()
     }
-    val shelterFilterList: MutableLiveData<List<Item>> by lazy {
+    val shelterFilterList: MutableLiveData<List<Item>> by lazy { //
         MutableLiveData<List<Item>>()
     }
+    val favoriteList: MutableLiveData<List<Item>> by lazy {
+        MutableLiveData<List<Item>>()
+    }
+
+    var roomNameSet = mutableSetOf<String>() // room에 있는 이름들을 관리하는 Set
 
     init {
         loadData()
     }
 
-    fun getAllShelters() { //DB의 모든 수를 가져오는 쿼리.
-        shelterList.postValue(shelterDao.getAllShelterData())
+    suspend fun getAllShelters(){ //DB의 모든 수를 가져오는 쿼리.
+        roomNameSet =  withContext(Dispatchers.IO){
+             shelterDao.getAllShelterNameData().toMutableSet()
+        }
     }
 
-    private fun insertShelter(shelter: Item) { //아이템을 넣어준다.
-        shelterDao.insertShelterData(shelter)
+    fun insertShelter(shelter: Item) { //아이템을 넣어준다.
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.i("insert",shelter.toString())
+            shelterDao.insertShelterData(shelter)
+            roomNameSet.add(shelter.fcltNm)
+        }
     }
 
     fun getUserCount(): Int {
@@ -48,13 +60,18 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun deleteShelter(shelter: Item) {
-        shelterDao.deleteShelterData(shelter)
+        CoroutineScope(Dispatchers.IO).launch {
+            shelterDao.deleteShelterData(shelter)
+            roomNameSet.remove(shelter.fcltNm)
+        }
     }
 
     fun getFilterArray(region: String, gender: String) { // filter를 통해 filterList에 전달.
         var list: List<Item> = shelterList.value ?: return
         shelterFilterList.postValue(genderFilter(gender,regionFilter(region,list)))
     }
+
+
     //지역을 거를 수 있는 filter 함수인 변수.
     val regionFilter : (String, List<Item>) -> List<Item> = { region, list -> //람다식으로 변수화 시켰음.
         if (region == "전체" || region == "") list //만약 빈값 또는 전체가 값으로 오면 받은 그대로를 보냄.
@@ -78,19 +95,6 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
             filterList
         }
     }
-
-
-
-    fun addRoom(list: List<Item>) { //없으면 그만큼 채우기 위해 넣어준다. 만약 10개가 이미 있어도 중복데이터는 막아서 괜찮다.
-        viewModelScope.launch {
-            list.forEach {
-                CoroutineScope(Dispatchers.IO).launch {
-                    insertShelter(it)
-                }
-            }
-        }
-    }
-
     fun loadCtpv(list: List<Item>) { // ctpv가 무엇이 있는지 알아보기위해 메서드 작성.
         var lists = mutableSetOf<String>()
         list.forEach {
@@ -115,6 +119,8 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
                         response.body()!!.response?.body?.items?.item!! // 아이템을 받아옴.
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
+                            getAllShelters() // Room에서 사용하는 제목들 가져오기.
+                            Log.i("getAllShelters",getAllShelters().toString())
                             shelterList.postValue(list) //모든수가 있어야하는 List
                             shelterFilterList.postValue(list) // 처음에 shelterFilter에 전부 있어야 하기 때문에 넣어줌.
                         }

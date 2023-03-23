@@ -20,8 +20,8 @@ interface ShelterDAO {
     @Delete
     fun deleteShelterData(item : Item)
 
-    @Query("SELECT * FROM Item ")
-    fun getAllShelterData() : List<Item>
+    @Query("SELECT fcltNm FROM Item")
+    fun getAllShelterNameData() : MutableList<String>
 
     @Query("SELECT COUNT(*) FROM Item")
     fun getUserCount(): Int

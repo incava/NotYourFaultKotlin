@@ -49,16 +49,15 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
-                android:hint="지역"
-                >
+                android:hint="지역">
 
                 <AutoCompleteTextView
                     android:id="@+id/actv_region"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="none"
-                    android:dropDownHeight="160dp"
-                     />
+                    android:scrollbars="vertical"
+                    android:dropDownHeight="160dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout

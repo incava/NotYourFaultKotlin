@@ -7,8 +7,9 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Item(
-    @PrimaryKey(autoGenerate = true)
-    val id : Int,
+    @PrimaryKey
+    @SerializedName("fcltNm")
+    val fcltNm: String,
     @SerializedName("cpctCnt")
     val cpctCnt: String?,
     @SerializedName("crtrYmd")
@@ -23,8 +24,6 @@ data class Item(
     val etrTrgtCn: String?,
     @SerializedName("expsrYn")
     val expsrYn: String?,
-    @SerializedName("fcltNm")
-    val fcltNm: String?,
     @SerializedName("fcltTypeNm")
     val fcltTypeNm: String?,
     @SerializedName("fxno")
