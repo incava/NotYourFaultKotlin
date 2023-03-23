@@ -72,7 +72,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 val marker = Marker()
                 marker.position =
                     LatLng(item.lat!!.toDouble(), item.lot!!.toDouble()) //마커 위도 경도 넣기.
-                marker.captionText = item.fcltNm!! // 앱바의 제목과 일치하므로 넣어줌.
+                marker.captionText = item.fcltNm // 앱바의 제목과 일치하므로 넣어줌.
                 marker.map = naverMap // 마커 생성.
             }
             Log.i("end", "end완료")

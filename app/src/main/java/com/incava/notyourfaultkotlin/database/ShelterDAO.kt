@@ -25,4 +25,6 @@ interface ShelterDAO {
 
     @Query("SELECT COUNT(*) FROM Item")
     fun getUserCount(): Int
+    @Query("SELECT * FROM Item")
+    fun getUserItem(): MutableList<Item>
 }

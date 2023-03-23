@@ -24,11 +24,11 @@ import retrofit2.Response
  */
 class ShelterViewModel(application: Application) : AndroidViewModel(application) {
     private val shelterDao = ShelterDatabase.getInstance(application)!!.shelterDao()
-    var totalNum = Int.MAX_VALUE // 데이터의 갯수를 알 수 있는 변수, 초기에는 무조건 받아야하므로 최대 수로 셋팅.
+    var totalNum = Int.MAX_VALUE // Room의 데이터를 받을 변수로
     val shelterList: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>()
     }
-    val shelterFilterList: MutableLiveData<List<Item>> by lazy { //
+    val shelterFilterList: MutableLiveData<List<Item>> by lazy {
         MutableLiveData<List<Item>>()
     }
     val favoriteList: MutableLiveData<List<Item>> by lazy {
@@ -41,7 +41,13 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         loadData()
     }
 
-    suspend fun getAllShelters(){ //DB의 모든 수를 가져오는 쿼리.
+    fun getAllShelters(){ //DB의 모든 수를 가져오는 쿼리.
+        CoroutineScope(Dispatchers.IO).launch {
+            favoriteList.postValue(shelterDao.getUserItem())
+        }
+    }
+
+    suspend fun getAllShelterName(){ //DB의 모든 수를 가져오는 쿼리.
         roomNameSet =  withContext(Dispatchers.IO){
              shelterDao.getAllShelterNameData().toMutableSet()
         }
@@ -53,10 +59,6 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
             shelterDao.insertShelterData(shelter)
             roomNameSet.add(shelter.fcltNm)
         }
-    }
-
-    fun getUserCount(): Int {
-        return shelterDao.getUserCount()
     }
 
     fun deleteShelter(shelter: Item) {
@@ -95,15 +97,6 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
             filterList
         }
     }
-    fun loadCtpv(list: List<Item>) { // ctpv가 무엇이 있는지 알아보기위해 메서드 작성.
-        var lists = mutableSetOf<String>()
-        list.forEach {
-            lists.add(it.ctpvNm!!)
-        }
-        Log.i("ctpv", lists.toString())
-    }
-
-
     private fun loadData() {
         val service = RetrofitClient.getInstance().create(APIService::class.java).queryShelter(
             "hSF2++mMiQXwGI5XfZmbSDPqorgTy+jVDuSMNwWmA1gY2h2HASedPbnFIz/eEBlxG8O2nv2vIsz7WSGLeIjWzw==",
@@ -119,8 +112,7 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
                         response.body()!!.response?.body?.items?.item!! // 아이템을 받아옴.
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
-                            getAllShelters() // Room에서 사용하는 제목들 가져오기.
-                            Log.i("getAllShelters",getAllShelters().toString())
+                            getAllShelterName() // Room에서 사용하는 제목들 가져오기.
                             shelterList.postValue(list) //모든수가 있어야하는 List
                             shelterFilterList.postValue(list) // 처음에 shelterFilter에 전부 있어야 하기 때문에 넣어줌.
                         }

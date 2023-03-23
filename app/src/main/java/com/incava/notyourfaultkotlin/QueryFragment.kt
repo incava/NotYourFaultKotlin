@@ -44,17 +44,26 @@ class QueryFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         }
         initObserver()
-        //attachSpinner()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        attachSpinner()
     }
 
     private fun initClickListener(){
         //어댑터에서 클릭 이벤트가 오면 처리할 메서드 구현.
         shelterAdapter.listItemClick(object : ShelterAdapter.SetOnClickListenerInterface{
             override fun listItemClickListener(item: Item, select: Boolean) {
-                if(select) shelterViewModel.deleteShelter(item)
-                else shelterViewModel.insertShelter(item)
+                if(select) { // 클릭이벤트가오면 상태에 따라 더하고 제거.
+                    shelterViewModel.deleteShelter(item)
+                    shelterViewModel.roomNameSet.add(item.fcltNm)
+                }
+                else {
+                    shelterViewModel.insertShelter(item)
+                    shelterViewModel.roomNameSet.remove(item.fcltNm)
+                }
             }
-
         })
         //버튼 클릭시,조회할 값을 주고 livedata변경.
         binding.btnQuery.setOnClickListener {
@@ -89,37 +98,4 @@ class QueryFragment : Fragment() {
             )
         ) //지역 String Array Spinner에 붙여준다.
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("ingiState","onDestroy")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.i("ingiState","onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.i("ingiState","onResume")
-        attachSpinner()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.i("ingiState","onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.i("ingiState","onStop")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.i("ingiState","onDetach")
-    }
-
-
 }
