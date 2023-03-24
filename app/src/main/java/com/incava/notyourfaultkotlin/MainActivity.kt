@@ -31,12 +31,4 @@ class MainActivity : AppCompatActivity() {
         //menu의 아이템 id와 navigation id는 같아야 자동으로 연결된다.
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.i("destroy", "destroy")
-        finish() // 요즘은 destroy해도 바로 안꺼짐
-    }
-
-
 }
