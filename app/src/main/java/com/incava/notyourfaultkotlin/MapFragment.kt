@@ -84,11 +84,14 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             naverMap.locationTrackingMode = LocationTrackingMode.None
         }
         shelterViewModel.shelterList.observe(viewLifecycleOwner) {
-            it.forEach { item ->
+            it?.forEach { item ->
+                //Log.i("items","${item.lot} ${item.lat}")
+                if (item.lat?.isEmpty() == true || item.lot?.isEmpty() == true)
+                    return@forEach // 만약 좌표가 없다면 마커 그리기 x
                 val marker = Marker()
                 marker.position =
-                    LatLng(item.lat!!.toDouble(), item.lot!!.toDouble()) //마커 위도 경도 넣기.
-                marker.captionText = item.fcltNm // 앱바의 제목과 일치하므로 넣어줌.
+                    LatLng(item.lat?.toDouble() ?: 37.0, item.lot?.toDouble() ?: 127.0) //마커 위도 경도 넣기.
+                marker.captionText = item.fcltNm  // 앱바의 제목과 일치하므로 넣어줌.
                 marker.map = naverMap // 마커 생성.
             }
             Log.i("end", "end완료")
