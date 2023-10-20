@@ -13,6 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.incava.notyourfaultkotlin.databinding.FragmentMapBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.CameraAnimation
@@ -92,6 +95,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 marker.position =
                     LatLng(item.lat?.toDouble() ?: 37.0, item.lot?.toDouble() ?: 127.0) //마커 위도 경도 넣기.
                 marker.captionText = item.fcltNm  // 앱바의 제목과 일치하므로 넣어줌.
+                marker.setOnClickListener {
+                    val clickItem = Gson().toJson(item)
+                    var action: NavDirections = MapFragmentDirections.actionMapFragmentToDetailFragment(clickItem)
+                    findNavController().navigate(action)
+                    true
+                }
                 marker.map = naverMap // 마커 생성.
             }
             Log.i("end", "end완료")

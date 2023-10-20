@@ -9,4 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="indigo">#FF3f51b5</color>
     <color name="sky">#FFA6EAFB</color>
+    <color name="hyperLink">#FF0174DF</color>
+    <color name="gray">#66000000</color>
+    <color name="pink">#D5C9DD</color>
 </resources>
