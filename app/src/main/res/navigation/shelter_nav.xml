@@ -15,10 +15,27 @@
         android:id="@+id/queryFragment"
         android:name="com.incava.notyourfaultkotlin.QueryFragment"
         android:label="fragment_query"
-        tools:layout="@layout/fragment_query" />
+        tools:layout="@layout/fragment_query" >
+        <action
+            android:id="@+id/action_queryFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/wantFragment"
         android:name="com.incava.notyourfaultkotlin.WantFragment"
         android:label="fragment_want"
-        tools:layout="@layout/fragment_want" />
+        tools:layout="@layout/fragment_want" >
+        <action
+            android:id="@+id/action_wantFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.incava.notyourfaultkotlin.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="shelterDetailInfo"
+            app:argType="string" />
+    </fragment>
 </navigation>

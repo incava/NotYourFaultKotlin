@@ -107,11 +107,13 @@ class ShelterViewModel(application: Application) : AndroidViewModel(application)
         service.enqueue(object : Callback<ShelterDTO> {
             override fun onResponse(call: Call<ShelterDTO>, response: Response<ShelterDTO>) {
                 var result = response.body()?.response?.header?.resultCode // 응답 확인.
+                Log.i("파싱 결과",result.toString())
                 if (result == "0") { // 받아온 아이템 배열
                     totalNum =
                         response.body()?.response!!.body?.totalCount?.toInt()!! // 총 갯수도 파악하기 위해. 변수 세팅.
                     var list: List<Item> =
                         response.body()!!.response?.body?.items?.item!! // 아이템을 받아옴.
+                    Log.i("파싱 결과",result.toString())
                     viewModelScope.launch {
                         CoroutineScope(Dispatchers.IO).launch {
                             getAllShelterName() // Room에서 사용하는 제목들 가져오기.

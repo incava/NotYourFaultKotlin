@@ -19,6 +19,7 @@ class ShelterAdapter(_nameSet: MutableSet<String>) : Adapter<ShelterAdapter.Shel
 
     interface SetOnClickListenerInterface {
         fun listItemClickListener(item: Item, select: Boolean)
+        fun listItemClickListener(item: Item)
     }
 
     private var onClickListener: SetOnClickListenerInterface? = null
@@ -53,7 +54,7 @@ class ShelterAdapter(_nameSet: MutableSet<String>) : Adapter<ShelterAdapter.Shel
             binding.apply {
                 cpctCnt.text = item.cpctCnt
                 etrPrdCn.text = item.etrPrdCn
-                etrTrgtCn.text = item.etrTrgtCn
+                etrTrgtCn.text = item.etrTrgtCn.toString()
                 fxno.text = item.fxno
                 rprsTelno.text = item.rprsTelno
                 fcltNm.text = item.fcltNm
@@ -73,6 +74,10 @@ class ShelterAdapter(_nameSet: MutableSet<String>) : Adapter<ShelterAdapter.Shel
 
                     it.isSelected = !(it.isSelected) //셀렉트를 반대로 대입.
                     Log.i("selected", it.isSelected.toString())
+                }
+                //리스트 클릭 시 리스너
+                binding.root.setOnClickListener {
+                    onClickListener?.listItemClickListener(item = item)
                 }
             }
         }

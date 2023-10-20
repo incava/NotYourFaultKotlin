@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.incava.notyourfaultkotlin.data.Item
 import com.incava.notyourfaultkotlin.databinding.FragmentWantBinding
 
@@ -58,6 +61,12 @@ class WantFragment : Fragment() {
             override fun listItemClickListener(item: Item, select: Boolean) {
                 if (select) shelterViewModel.deleteShelter(item)
                 else shelterViewModel.insertShelter(item)
+            }
+            //리스트를 누르면 데이터를 들고 상세페이지로 이동.
+            override fun listItemClickListener(item: Item) {
+                val clickItem = Gson().toJson(item)
+                var action: NavDirections = WantFragmentDirections.actionWantFragmentToDetailFragment(clickItem)
+                findNavController().navigate(action)
             }
         })
 

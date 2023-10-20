@@ -10,9 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import com.google.gson.Gson
 import com.incava.notyourfaultkotlin.data.Item
 import com.incava.notyourfaultkotlin.databinding.FragmentQueryBinding
 
@@ -63,6 +66,12 @@ class QueryFragment : Fragment() {
                     shelterViewModel.insertShelter(item)
                     shelterViewModel.roomNameSet.remove(item.fcltNm)
                 }
+            }
+
+            override fun listItemClickListener(item: Item) {
+                val clickItem = Gson().toJson(item)
+                var action: NavDirections = QueryFragmentDirections.actionQueryFragmentToDetailFragment(clickItem)
+                findNavController().navigate(action)
             }
         })
         //버튼 클릭시,조회할 값을 주고 livedata변경.

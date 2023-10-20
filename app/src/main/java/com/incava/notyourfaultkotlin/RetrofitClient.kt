@@ -16,7 +16,7 @@ object RetrofitClient {
     fun getInstance(): Retrofit {
         if (instance == null) {
             instance = Retrofit.Builder()
-                .baseUrl("https://apis.data.go.kr/1383000/gmis/teenRAreaService/") //기본 baseUrl
+                .baseUrl("http://apis.data.go.kr/1383000/gmis/teenRAreaServiceV2/") //기본 baseUrl
                 //.addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
