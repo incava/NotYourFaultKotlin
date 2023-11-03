@@ -12,4 +12,5 @@
     <color name="hyperLink">#FF0174DF</color>
     <color name="gray">#66000000</color>
     <color name="pink">#D5C9DD</color>
+    <color name="background">#FFa0a0a0</color>
 </resources>
